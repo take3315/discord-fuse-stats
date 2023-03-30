@@ -1,3 +1,4 @@
+const fs = require('fs').promises;
 require('dotenv').config();
 const BOTtoken = process.env.BOTtoken;
 const apiKey = process.env.API;
@@ -51,10 +52,10 @@ async function getdata() {
     var output = 
     symbolETH + "  " + 
     "utilization:" + " " + utilETH.toLocaleString('en-US') + "%" + "  " +  
-    "Supply:" + " " + "Ξ" + supplyETH.toLocaleString('en-US') + "  " + 
-    "Borrow:" + " " + "Ξ" + borrowETH.toLocaleString('en-US') + "  " + 
-    "Old Cap:" + " " + "Ξ" + oldcapETH.toLocaleString('en-US') + "  " + 
-    "New Cap:" + " " + "Ξ" + capETH.toLocaleString('en-US') + "\n" +
+    "Supply:" + " " + "ETH" + supplyETH.toLocaleString('en-US') + "  " + 
+    "Borrow:" + " " + "ETH" + borrowETH.toLocaleString('en-US') + "  " + 
+    "Old Cap:" + " " + "ETH" + oldcapETH.toLocaleString('en-US') + "  " + 
+    "New Cap:" + " " + "ETH" + capETH.toLocaleString('en-US') + "\n" +
     symbolUSDC + "  " +
     "utilization:" + " " + utilUSDC.toLocaleString('en-US') + "%" + "  " +  
     "Supply:" + " " + supplyUSDC.toLocaleString('en-US',{style: 'currency', currency: 'USD'}) + "  " + 
@@ -63,7 +64,16 @@ async function getdata() {
     "New Cap:" + " " + capUSDC.toLocaleString('en-US',{style: 'currency', currency: 'USD'})
 
     return output;
-}
+};
+
+async function writeResultToFile() {
+    const result = await getdata();
+    await fs.writeFile('result.txt', result.toString());
+  }
+  
+  module.exports = {
+    writeResultToFile
+  };
 
 client.once('ready', () => { 
 	console.log('ready'); 
